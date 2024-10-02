@@ -5,7 +5,7 @@ public class Player {
     private double x;
     private double y;
     private double movementSpeed;
-
+    private volatile static Player player; 
     // TODO: Instance should be named "player"
 
     /*
@@ -14,12 +14,26 @@ public class Player {
      * @param y y-coordinate of player (default 0.0)
      * @param movementSpeed movement speed of player (default 5.0)
      */
-
+    private Player () {
+        x = 0.0;
+        y = 0.0;
+        movementSpeed = 5.0; 
+    }
     /*
      * TODO: Returns the instance of the player
      * Name: getPlayer()
      * @return the instance of the player
      */
+    public static Player getPlayer() {
+        if (uniquePlayer == null) {
+            synchronized (Player.class) {
+                if (uniquePlayer == null) {
+                    uniquePlayer = new Player(); 
+                }
+            }
+        }
+        return uniquePlayer; 
+    }
 
     public void moveUp() {
         setY(Math.max(0, getY() - movementSpeed));
